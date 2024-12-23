@@ -1,0 +1,72 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace counting_sort
+{
+    internal class Program
+    {
+        public static void Sort(int[] array)
+        {
+            int n = array.Length;
+
+            // Step 1: Find min and max
+            int min = array[0];
+            int max = array[0];
+            for (int i = 1; i < n; i++)
+            {
+                if (array[i] < min) min = array[i];
+                if (array[i] > max) max = array[i];
+            }
+
+            int range = max - min + 1;
+
+            // Step 2: Create and initialize the count array
+            int[] count = new int[range];
+            for (int i = 0; i < range; i++)
+            {
+                count[i] = 0;
+            }
+
+            // Step 3: Populate the count array
+            for (int i = 0; i < n; i++)
+            {
+                count[array[i] - min]++;
+            }
+
+            // Step 4: Compute cumulative frequency
+            for (int i = 1; i < range; i++)
+            {
+                count[i] += count[i - 1];
+            }
+
+            // Step 5: Build the output array
+            int[] output = new int[n];
+            for (int i = n - 1; i >= 0; i--)
+            {
+                output[count[array[i] - min] - 1] = array[i];
+                count[array[i] - min]--;
+            }
+
+            // Step 6: Copy the sorted array back to the input array
+            for (int i = 0; i < n; i++)
+            {
+                array[i] = output[i];
+            }
+        }
+        static void Main(string[] args)
+        {
+            int[] array = {3,9,6,3,4,8,9,6,8,6,8 };
+            Console.WriteLine("Original Array:");
+            Console.WriteLine(string.Join(" ", array));
+
+            Sort(array);
+
+            Console.WriteLine("Sorted Array:");
+            Console.WriteLine(string.Join(" ", array));
+            Console.ReadKey();
+        }
+    }
+}
