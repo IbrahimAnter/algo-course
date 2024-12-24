@@ -87,6 +87,8 @@ namespace primMST
 
             PrimMST(graph);
 
+            console.Readkey();
+
         }
     }
 }
